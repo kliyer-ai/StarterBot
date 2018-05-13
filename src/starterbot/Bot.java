@@ -17,6 +17,8 @@ public interface Bot {
 
     Coordinate placeShot(GameState state);
     
-    void handleGotShot(Coordinate c);
+    default void gotShot(Coordinate c){
+    
+    };
     
 }

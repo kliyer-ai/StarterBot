@@ -23,11 +23,11 @@ public class ExampleBot implements Bot{
     @Override
     public Coordinate[] placeShip(GameState state) {
         BattleShip b = state.getShipsToPlace()[0];
-        Coordinate[] coords = findSipCoordinates(state.getMyBoard(), b);
+        Coordinate[] coords = findShipCoordinates(state.getMyBoard(), b);
         return coords;
     }
     
-    private Coordinate[] findSipCoordinates(Board myBoard, BattleShip b){
+    private Coordinate[] findShipCoordinates(Board myBoard, BattleShip b){
         for(int y = 0; y < myBoard.BOARD_SIZE; y++)
             for(int x = 0; x < myBoard.BOARD_SIZE; x++){
                 if(myBoard.emptyRow(new Coordinate(x, y), b.getSize()))
@@ -39,11 +39,6 @@ public class ExampleBot implements Bot{
     @Override
     public Coordinate placeShot(GameState state) {
         return new Coordinate(0, 0);
-    }
-
-    @Override
-    public void handleGotShot(Coordinate c) {
-        // Optional to implement.
     }
     
 }

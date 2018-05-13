@@ -54,7 +54,7 @@ public class GameHandler {
         if(type.equals("GOTISLAND"))
             state.addIsland(c);
         else if(type.equals("GOTSHOT"))
-            bot.handleGotShot(c);
+            bot.gotShot(c);
         else
             System.out.println("Wrong Operation");
     }
