@@ -1,0 +1,193 @@
+Protocol:
+
+constanten:
+dimensies 10x10
+wikipedia data for ship lengths and amounts
+5 islands
+
+comm =
+REQUEST ACTION actiontype   what this bot does
+RESULT resulttype           reply to my actions
+UPDATE updateinfo           information from enemy
+GAME RESULT result          end the game
+
+
+actiontype =
+ISLAND
+SHIP
+SHOT
+
+resulttype =
+HIT [YOUSUNKMY shiptype]
+MISS
+
+updateinfo =
+GOTSHOT coord
+GOTISLAND coord
+
+shiptype = 
+BATTLESHIP
+
+coord =
+(x,y)
+
+result =
+YOU WON
+YOU LOST [(DISQUALIFED: reason)]
+
+reason =
+some kind of string
+
+
+
+
+PLACE SHIP coord coord
+PLACE ISLAND coord
+SHOOT coord
+
+
+
+Update visualiser wanneer:
+Eigen bord wanneer de tegenstander een eiland plaatst
+Eigen bord wanneer de bot een schip plaatst
+Eigen bord wanneer de tegenstander schiet
+
+Ander bord wanneer de bot een eiland plaatst
+Ander bord wanneer de bot schiet en het resultaat terug krijgt
+
+Oftewel:
+
+UPDATE is altijd vizupdate
+PLACE is altijd vizupdate
+SHOOT is pas een update wanneer het resultaat binnenkomt
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package echobot;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ *
+ * @author nick
+ */
+public abstract class BotTest {
+
+    protected abstract void placeIsland();
+
+    protected abstract void placeShip();
+
+    protected abstract void placeShot();
+    
+    private Coordinate lastShot;
+    private GameState game;
+    
+    
+    public BotTest(){
+        game = new GameState();
+    }
+    
+    public void performAction(String actionType){
+        switch(actionType){
+            case "ISLAND":
+                placeIsland();
+                break;
+            case "SHIP":
+                placeShip();
+                break;
+            case "SHOT":
+                placeShot();
+                break;
+            default:
+                System.out.println("Wrong action type");
+        }
+    }
+    
+    public void handleActionResult(String type){
+        game.setTile(lastShot, Tile.valueOf(type));
+    }
+    public void handleActionResult(String type, String shipType){
+        handleActionResult(type);
+        game.sunkShip(BattleShip.valueOf(shipType));
+    }
+    
+    public void handleUpdate(String type, String coords){
+        Coordinate c = Coordinate.getCoordinate(coords);
+        
+        if(type.equals("GOTISLAND"))
+            game.addIsland(c);
+        else if(type.equals("GOTSHOT"))
+            handleGotShot(c);
+        else
+            System.out.println("Wrong Operation");
+    }
+    
+    public void handleGameResult(String type){
+        if(type.equals("WON"))
+            System.out.println("Congratulations, you won!");
+        else
+            System.out.println("You lost!");
+    }
+    public void handleGameResult(String type, String[] reason){
+        System.out.println("You were probably disqualified and lost");
+        System.out.println("Reason:");
+        for(String word : reason)
+            System.out.print(word + " ");
+    }
+    
+    protected Board getEnemyBoard(){
+        return game.getEnemyBoard();
+    }
+    
+    protected Board getMyBoard(){
+        return game.getMyBoard();
+    }
+    
+    protected int getShipAmount(BattleShip b){
+        return game.getShipAmout(b);
+    }
+    
+    protected BattleShip[] getShipsToPlace(){
+        return game.getShipsToPlace();
+    }
+    
+    protected BattleShip[] getSunkShips(){
+        return game.getSunkShips();
+    }
+    
+    protected void sendIsland(Coordinate c){
+        game.setTile(c, Tile.ISLAND);
+        System.out.println("PLACE ISLAND " + c);
+    }
+    
+    protected void sendShip(Coordinate start, Coordinate end, BattleShip b){
+        int dx = Math.abs(start.getX() - end.getX());
+        int dy = Math.abs(start.getY() - end.getY());
+        if((dx != b.getSize()-1 && dy != b.getSize() - 1)){
+            System.out.println("Coordinates don't match ship type");
+            return;
+        }
+        if(!game.placeShip(start, end, b))
+            System.out.println("Ship type has already been placed");
+        else{
+            System.out.println("PLACE SHIP " + start + " " + end);
+        }
+    }
+    
+    protected void sendShot(Coordinate c){
+        lastShot = c;
+        System.out.println("SHOOT " + c);
+    }
+    
+    protected void handleGotShot(Coordinate c){
+        // can be overriden
+        // means that one of your ships got shot
+    }
+    
+    
+}
