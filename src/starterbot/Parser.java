@@ -31,40 +31,56 @@ public class Parser {
             
             switch(commands[0]){
                 case "REQUEST":
-                    if(commands[1].equals("ACTION"))
-                        handler.performAction(commands[2]);
-                    else
-                        System.out.println("Undefined Request");
+                    parseRequest(commands);
                     break;
                 case "RESULT":
-                    if(commands.length==2)
-                        handler.handleActionResult(commands[1]);
-                    else if(commands.length==4 && commands[2].equals("YOUSUNKMY"))
-                        handler.handleActionResult(commands[1], commands[3]);
-                    else
-                        System.out.println("Undefined Result");
+                    parseResult(commands);
                     break;
                 case "UPDATE":
-                    if(commands.length==4)
-                        handler.handleUpdate(commands[1], commands[2] + commands[3]);
-                    else
-                        handler.handleUpdate(commands[1], commands[2]);
+                    parseUpdate(commands);
                     break;
                 case "GAME":
-                    if(commands[1].equals("RESULT")){
-                        if(commands.length==4)
-                            handler.handleGameResult(commands[3]);
-                        if(commands.length > 4)
-                            handler.handleGameResult(commands[3], Arrays.copyOfRange(commands, 4, commands.length));
-                        done = true;
-                    }
-                    else
-                        System.out.println("Undefined Game");
+                    parseGame(commands);
+                    done = true;
                     break;
                 default:
                     System.out.println("Unknown command");
+                    done = true;
             }
         }
     }
     
+    private void parseRequest(String[] commands){
+        if(commands[1].equals("ACTION"))
+            handler.performAction(commands[2]);
+        else
+            System.out.println("Undefined Request");
+    }
+    
+    private void parseResult(String[] commands){
+        if(commands.length==2)
+            handler.handleActionResult(commands[1]);
+        else if(commands.length==4 && commands[2].equals("YOUSUNKMY"))
+            handler.handleActionResult(commands[1], commands[3]);
+        else
+            System.out.println("Undefined Result");
+    }
+    
+    private void parseUpdate(String[] commands){
+        if(commands.length==4)
+            handler.handleUpdate(commands[1], commands[2] + commands[3]);
+        else
+            handler.handleUpdate(commands[1], commands[2]);
+    }
+    
+    private void parseGame(String[] commands){
+        if(commands[1].equals("RESULT")){
+            if(commands.length==4)
+                handler.handleGameResult(commands[3]);
+            if(commands.length > 4)
+                handler.handleGameResult(commands[3], Arrays.copyOfRange(commands, 4, commands.length));
+        }
+        else
+            System.out.println("Undefined Game");
+    }
 }

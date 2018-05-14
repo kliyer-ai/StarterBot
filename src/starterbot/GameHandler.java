@@ -52,7 +52,7 @@ public class GameHandler {
         Coordinate c = Coordinate.parseCoordinate(coords);
         
         if(type.equals("GOTISLAND"))
-            state.addIsland(c);
+            state.setOwnTile(c, Tile.ISLAND);
         else if(type.equals("GOTSHOT"))
             bot.gotShot(c);
         else

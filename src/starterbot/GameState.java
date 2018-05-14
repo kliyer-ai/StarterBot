@@ -7,10 +7,7 @@ package starterbot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 /**
  *
@@ -46,6 +43,10 @@ public class GameState {
         this.enemyBoard.setTile(c, t);
     }
     
+    public void setOwnTile(Coordinate c, Tile t){
+        this.myBoard.setTile(c, t);
+    }
+    
     public void sunkShip(BattleShip b){
         sunkShips.add(b);
     }
@@ -56,10 +57,6 @@ public class GameState {
     
     public Board getMyBoard() {
         return myBoard.copy(); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    public void addIsland(Coordinate c){
-        myBoard.setTile(c, Tile.ISLAND);
     }
     
     public void placeShip(Coordinate start, Coordinate end){
@@ -96,7 +93,5 @@ public class GameState {
     public GameState copy(){
         return new GameState(getMyBoard(), getEnemyBoard(), getSunkShips(), getShipsToPlace());
     }
-    
-    
     
 }
