@@ -17,5 +17,5 @@ To actually run your bot you will have to do the following.
 1. Edit the config so it looks similar to this:
 ```
 # BOT RUNNING COMMAND:
-java -jar ./StarterBot.jar
+java -jar ./<YourBot>.jar
 ```
