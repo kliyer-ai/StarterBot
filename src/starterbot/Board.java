@@ -69,7 +69,7 @@ public class Board {
     
     public boolean emptyCol(Coordinate start, int length){
         for(int i = 0; i < length; i++)
-            if(start.getY() + i >= BOARD_SIZE || start.getY() + i < 0 || board[coordinateToRow(start) + i][coordinateToCol(start)] != Tile.EMPTY)
+            if(coordinateToRow(start) + i >= BOARD_SIZE || start.getY() + i < 0 || board[coordinateToRow(start) + i][coordinateToCol(start)] != Tile.EMPTY)
                 return false;
         return true;        
     }
