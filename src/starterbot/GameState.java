@@ -47,6 +47,10 @@ public class GameState {
         this.myBoard.setTile(c, t);
     }
     
+    /**
+     * Adds a sunken ship to the list of all sunken ships.
+     * @param b 
+     */
     public void sunkShip(BattleShip b){
         sunkShips.add(b);
     }
@@ -59,6 +63,11 @@ public class GameState {
         return myBoard.copy(); //To change body of generated methods, choose Tools | Templates.
     }
     
+    /**
+     * Places a ship on your board given the start and end coordinates.
+     * @param start
+     * @param end 
+     */
     public void placeShip(Coordinate start, Coordinate end){
         int dx = Math.abs(start.getX() - end.getX());
         int dy = Math.abs(start.getY() - end.getY());
@@ -81,11 +90,16 @@ public class GameState {
             }
     }
       
-       
+    /**
+     * @return A list of all ships that you still have to place.
+     */   
     public BattleShip[] getShipsToPlace(){
         return shipsToPlace.toArray(new BattleShip[shipsToPlace.size()]);
     }
     
+    /**
+     * @return A list of all enemy ships that were sunken by you.
+     */
     public BattleShip[] getSunkShips(){
         return sunkShips.toArray(new BattleShip[sunkShips.size()]);
     }

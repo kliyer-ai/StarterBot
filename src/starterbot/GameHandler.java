@@ -28,7 +28,7 @@ public class GameHandler {
                 sendIsland(island);
                 break;
             case "SHIP":
-                Coordinate[] ship = bot.placeShip(state.copy());
+                CoordinatePair ship = bot.placeShip(state.copy());
                 sendShip(ship);
                 break;
             case "SHOT":
@@ -77,15 +77,11 @@ public class GameHandler {
         System.out.println("PLACE ISLAND " + c);
     }
     
-    protected void sendShip(Coordinate[] ship){
-        if(ship.length != 2){
-            System.out.println("Error: Ship must have exactly two coordinates");
-            return;
-        }
-        Coordinate start = ship[0];
-        Coordinate end = ship[1];
+    protected void sendShip(CoordinatePair ship){
+        Coordinate start = ship.getStart();
+        Coordinate end = ship.getEnd();
         state.placeShip(start, end);
-        System.out.println("PLACE SHIP " + start + " " + end);
+        System.out.println("PLACE SHIP " + ship);
     }
     
     protected void sendShot(Coordinate c){

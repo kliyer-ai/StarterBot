@@ -21,17 +21,17 @@ public class ExampleBot implements Bot{
     }
 
     @Override
-    public Coordinate[] placeShip(GameState state) {
+    public CoordinatePair placeShip(GameState state) {
         BattleShip b = state.getShipsToPlace()[0];
-        Coordinate[] coords = findShipCoordinates(state.getMyBoard(), b);
+        CoordinatePair coords = findShipCoordinates(state.getMyBoard(), b);
         return coords;
     }
     
-    private Coordinate[] findShipCoordinates(Board myBoard, BattleShip b){
+    private CoordinatePair findShipCoordinates(Board myBoard, BattleShip b){
         for(int y = 0; y < myBoard.BOARD_SIZE; y++)
             for(int x = 0; x < myBoard.BOARD_SIZE; x++){
                 if(myBoard.emptyRow(new Coordinate(x, y), b.getSize()))
-                    return new Coordinate[]{new Coordinate(x, y), new Coordinate(x + b.getSize() - 1, y)};
+                    return new CoordinatePair(new Coordinate(x, y), new Coordinate(x + b.getSize() - 1, y));
             }
         return null;                
     }
